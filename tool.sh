@@ -1,4 +1,4 @@
-#! /bin/bash/ /usr/bin/bash/ 
+#! /bin/bash 
 
 echo "---------------Insira um valor de instalação---------------"
 echo "[1] Instalação de Software de DevOps-----------------------"
@@ -8,33 +8,37 @@ echo "[x] Sair---------------------------------------------------"
 
 read valorUser
 
-if [ "$valorUser" == 1 || "$valorUser" == 3 ];
-then;
+if [[ "$valorUser" == 2 || "$valorUser" == 3 ]];
+then
 
-    pacman -S git -y
-    pacman -S docker -y
-    pacman -S docker-compose -y
-    pacman -S python -y
-    pacman -S terraform -y
-    pacman -S mingw-w64-binutils -y
-    pacman -S nano -y
-    pacman -S ansible -y
-    
-
-    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-    chmod 777 kubectl
-    mv kubectl /usr/bin/
-
-    git clone https://aur.archlinux.org/rancher-desktop.git
-    cd rancher-desktop
-    makepkg -si
+    pacman -S code -y
 
 fi;
 
 
-if [ "$valorUser" == 2 || "$valorUser" == 3 ];
-then;
+if [[ "$valorUser" == 1 || "$valorUser" == 3 ]];
+then
 
-    pacman -S code -y
+    pacman -Syu --needed --noconfirm git 
+    pacman -Syu --needed --noconfirm docker 
+    pacman -Syu --needed --noconfirm docker-compose 
+    pacman -Syu --needed --noconfirm python 
+    pacman -Syu --needed --noconfirm terraform 
+    pacman -Syu --needed --noconfirm mingw-w64-binutils 
+    pacman -Syu --needed --noconfirm nano 
+    pacman -Syu --needed --noconfirm ansible 
+    
+    sudo systemctl enable --now docker
+
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    sudo chmod 777 kubectl
+    sudo mv kubectl /usr/bin/
+
+
+    rm -rf rancher-desktop
+    exit
+    git clone https://aur.archlinux.org/rancher-desktop.git
+    cd rancher-desktop
+    makepkg -si --noconfirm
 
 fi;
